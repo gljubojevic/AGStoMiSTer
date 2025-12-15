@@ -1,0 +1,4 @@
+tools/*.zip
+tools/hst-imager
+
+build/*.hdf
