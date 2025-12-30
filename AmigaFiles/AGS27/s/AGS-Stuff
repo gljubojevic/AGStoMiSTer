@@ -12,11 +12,15 @@ IF NOT WARN
 Else
  Assign >NIL: EXISTS SHARE:
  IF NOT WARN
-  IF NOT EXISTS SHARE:SaveGames
-   makedir SHARE:SaveGames
+; AGS Expects SHARED:
+  Assign SHARED: SHARE:
+  IF NOT EXISTS SHARED:SaveGames
+   makedir SHARED:SaveGames
   Endif
-  Assign WHDSaves: SHARE:SaveGames
+  Assign WHDSaves: SHARED:SaveGames
  Else
+; AGS Expects SHARED: patch to RAM:
+  Assign SHARED: RAM:
   makedir RAM:SaveGames
   Assign WHDSaves: RAM:SaveGames
  Endif

@@ -2,8 +2,8 @@
 $AmigaFiles = ".\AmigaFiles"
 $FunctionsFolder = '.\Functions\'
 $ToolsFolder = '.\Tools\'
-$BuildFolder = '.\Build\'
-#$BuildFolder = 'C:\Log\'
+#$BuildFolder = '.\Build\'
+$BuildFolder = 'C:\Log\'
 $BuildHDD = "$($BuildFolder)games\AmigaGameSelector27\HDD\"
 
 # HST-Imager
@@ -33,7 +33,7 @@ if ((Test-Path $HSTImager) -eq $false) {
 }
 
 # Hardcode images position
-# $AGS27hdf = "E:\Download\AGS_UAE_v27\AGS_UAE_v27\WinUAE\AGS_UAE"
+$AGS27hdf = "E:\Download\AGS_UAE_v27\AGS_UAE_v27\WinUAE\AGS_UAE"
 ##################################################
 # Select folder with AGS UAE HD files
 if (-not $AGS27hdf) {
@@ -139,7 +139,7 @@ Write-Host "Creating image $($AGS27MiSTerPrimary), $($AGS27MiSTerPrimarySize) by
 # initialize rigid disk block
 & $HSTImagerExe rdb init $AGS27MiSTerPrimary
 # import rdb file system pfs3aio with dos type PDS3 from aminet.net
-& $HSTImagerExe rdb fs import $AGS27MiSTerPrimary https://aminet.net/disk/misc/pfs3aio.lha --dos-type PDS3 --name pfs3aio
+& $HSTImagerExe rdb fs import $AGS27MiSTerPrimary https://aminet.net/disk/misc/pfs3aio.lha --dos-type PDS3 --name pfs3aio --verbose
 
 # add rdb partition of 1gb with device name "DH0" and set bootable "Workbench"
 & $HSTImagerExe rdb part add $AGS27MiSTerPrimary DH0 PDS3 1gb --bootable --verbose
@@ -173,7 +173,7 @@ Write-Host "Creating image $($AGS27MiSTerSecondary), $($AGS27MiSTerSecondarySize
 # initialize rigid disk block
 & $HSTImagerExe rdb init $AGS27MiSTerSecondary
 # import rdb file system pfs3aio with dos type PDS3 from aminet.net
-& $HSTImagerExe rdb fs import $AGS27MiSTerSecondary https://aminet.net/disk/misc/pfs3aio.lha --dos-type PDS3 --name pfs3aio
+& $HSTImagerExe rdb fs import $AGS27MiSTerSecondary https://aminet.net/disk/misc/pfs3aio.lha --dos-type PDS3 --name pfs3aio --verbose
 
 # add rdb partition of 16gb space with device name "DH3" "Extra"
 & $HSTImagerExe rdb part add $AGS27MiSTerSecondary DH3 PDS3 16gb --verbose
@@ -218,7 +218,6 @@ $HDFSource = "$($AGS27hdf)\Media.hdf"
 # Copy only fixes primary image
 $AGS27MiSTerImage = $AGS27MiSTerPrimary
 
-
 ##################################################
 # Copy share drivers
 & $HSTImagerExe fs extract "$($AmigaFiles)\MiSTer_Tools2.adf\MiSTer_share.lha" $BuildFolder --makedir --force
@@ -236,7 +235,7 @@ $null = Remove-Item -Path "$($BuildFolder)MiSTer_RTG.lha"
 ##################################################
 # Copy AGS Patches
 $AmigaFilesAGS = "$($AmigaFiles)\AGS27"
-& $HSTImagerExe fs copy "$($AmigaFilesAGS)\s\*" "$($AGS27MiSTerImage)\rdb\dh0\s\" --force #--verbose
+& $HSTImagerExe fs copy "$($AmigaFilesAGS)\s\*" "$($AGS27MiSTerImage)\rdb\dh0\s\" --force --verbose
 & $HSTImagerExe fs copy "$($AmigaFilesAGS)\Prefs\Sys\*" "$($AGS27MiSTerImage)\rdb\dh0\Prefs\Sys\" --force --verbose
 & $HSTImagerExe fs copy "$($AmigaFilesAGS)\Prefs\Env-Archive\*" "$($AGS27MiSTerImage)\rdb\dh0\Prefs\Env-Archive\" --force --verbose
 

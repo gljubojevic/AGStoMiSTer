@@ -1,2 +1,2 @@
 # Tools folder
-Tools installed here
+Tools used by script are downloaded and extracted here.

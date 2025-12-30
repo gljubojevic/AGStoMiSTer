@@ -1,2 +1,3 @@
 # Build folder
-Here image is built
+Here HDD image(s) is built.  
+Content of this folder should be copied to MiSTer SD card.

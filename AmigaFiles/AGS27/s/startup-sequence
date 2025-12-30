@@ -46,6 +46,11 @@ c:setpatchmrgcop
 C:Mount >NIL: DEVS:DOSDrivers/~(#?.info)
 
 IF EXISTS DEVS:Monitors
+  IF $HW EQ "Real"
+    IF EXISTS DEVS:Monitors/uaegfx
+      delete DEVS:Monitors/uaegfx#?
+    EndIF
+  EndIF
   IF EXISTS DEVS:Monitors/VGAOnly
     DEVS:Monitors/VGAOnly
   EndIF
