@@ -1,5 +1,9 @@
 tools/*.zip
+tools/*.lha
 tools/hst-imager
 
 build/*.hdf
+build/games/AmigaGameSelector30/*.ROM
 build/Temp
+
+fragments.ps1

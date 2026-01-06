@@ -1,8 +1,35 @@
 {
 	"cSpell.words": [
+		"AGSOS",
+		"ahiusr",
 		"aminet",
+		"audiomodes",
+		"Blit",
 		"bootable",
+		"brcm",
+		"CPUTYPE",
+		"diskfont",
+		"emmc",
+		"ENVARC",
+		"FPUTYPE",
+		"iffparse",
 		"Imager",
-		"makedir"
+		"KEYMAPS",
+		"Kickstarts",
+		"LFORMAT",
+		"Loadresource",
+		"makedir",
+		"NOREQ",
+		"pistorm",
+		"prefs",
+		"Remlib",
+		"REXX",
+		"Rexxc",
+		"screenmode",
+		"sdhc",
+		"Setpatch",
+		"Softieee",
+		"uaegfx",
+		"whdlsaves"
 	]
 }

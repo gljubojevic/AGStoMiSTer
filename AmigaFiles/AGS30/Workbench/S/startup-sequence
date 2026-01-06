@@ -1,0 +1,210 @@
+; MiSTer patch SCSI device for large HDD support
+If EXISTS DEVS:scsi.device
+  LoadModule DEVS:scsi.device
+Endif
+
+;No MMU on MiSTer
+;C:MuMove4k
+
+RemLib >Nil: icon.library
+
+C:SetPatch QUIET
+;C:BlazeWCP >NIL:
+
+C:Version >NIL:
+C:AddBuffers >NIL: DF0: 15
+
+C:MakeDir RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
+C:Copy >NIL: ENVARC: RAM:ENV ALL NOREQ
+
+Resident >NIL: C:Assign PURE
+Resident >NIL: C:Execute
+
+Assign >NIL: System: SYS:
+Assign >NIL: ENV: RAM:ENV
+Assign >NIL: T: RAM:T
+Assign >NIL: CLIPS: RAM:Clipboards
+Assign >NIL: REXX: S:
+Assign >NIL: PRINTERS: DEVS:Printers
+Assign >NIL: KEYMAPS: DEVS:Keymaps
+Assign >NIL: LOCALE: SYS:Locale
+Assign >NIL: LIBS: SYS:Classes ADD
+Assign >NIL: HELP: LOCALE:Help DEFER
+
+
+; Checks for 68060 processor and removes 68040.library
+C:CPU >RAM:CPU CPUTYPE
+Search >NIL: RAM:CPU 68060 QUIET
+If NOT WARN
+  If EXISTS Libs:68040.library
+    If NOT WARN
+      Echo ""
+      Echo "68060 detected. Renaming 68040.library..."
+      Echo "This process only happens once."
+      Remlib >NIL: 68040.library    ; Unload 68040.library if loaded
+      CD Libs:
+      If EXISTS 68040.backup
+        Delete >NIL: 68040.backup    ; Delete 68040.backup if in folder
+      Endif
+      Rename >NIL: 68040.library 68040.backup QUIET ; Rename 68040.library
+      SET DoReboot 1
+    Endif
+  Endif
+Else
+  If $MiSTer EQ "1"
+    ; Remove all CPU libraries
+    If EXISTS Libs:680x0.library
+      Echo "MiSTer, Moving 680x0.library to 680x0.backup..."
+      Remlib >NIL: 680x0.library
+      Rename >NIL: Libs:680x0.library Libs:680x0.backup QUIET
+      SET DoReboot 1
+    EndIf
+    If EXISTS Libs:68020.library
+      Echo "MiSTer, Moving 68020.library to 68020.backup..."
+      Remlib >NIL: 68020.library
+      Rename >NIL: Libs:68020.library Libs:68020.backup QUIET
+      SET DoReboot 1
+    EndIf
+    If EXISTS Libs:68030.library
+      Echo "MiSTer, Moving 68030.library to 68030.backup..."
+      Remlib >NIL: 68030.library
+      Rename >NIL: Libs:68030.library Libs:68030.backup QUIET
+      SET DoReboot 1
+    EndIf
+    If EXISTS Libs:68040.library
+      Echo "MiSTer, Moving 68040.library to 68040.backup..."
+      Remlib >NIL: 68040.library
+      Rename >NIL: Libs:68040.library Libs:68040.backup QUIET
+      SET DoReboot 1
+    EndIf
+    If EXISTS Libs:68060.library
+      Echo "MiSTer, Moving 68060.library to 68060.backup..."
+      Remlib >NIL: 68060.library
+      Rename >NIL: Libs:68060.library Libs:68060.backup QUIET
+      SET DoReboot 1
+    EndIf
+    ; Remove MMU library
+    If EXISTS Libs:mmu.library
+      Echo "MiSTer, Moving mmu.library to mmu.backup..."
+      Remlib >NIL: mmu.library
+      Rename >NIL: Libs:mmu.library Libs:mmu.backup QUIET
+      SET DoReboot 1
+    EndIf
+  Else
+    ; Default use 68040.library
+    If NOT EXISTS Libs:68040.library
+      If EXISTS Libs:68040.backup
+        Rename >NIL: libs:68040.backup Libs:68040.library QUIET ; Rename 68040.library
+      Endif
+    Endif
+  Endif 
+Endif
+Delete >NIL: RAM:CPU
+
+; Check for FPU and install Softieee if one doesn't exist.
+;C:CPU >RAM:FPU FPUTYPE
+;Search >NIL: RAM:FPU 6888 QUIET
+;If NOT WARN
+; C:SOFTIEEE >NIL: <NIL:
+;Endif 
+;Delete >NIL: RAM:FPU
+
+
+; Remove uaegfx and HighGFX when MiSTer RTG is installed
+If $MiSTer EQ "1"
+  IF EXISTS DEVS:Monitors/MiSTer
+    IF EXISTS DEVS:Monitors/uaegfx
+      Echo "MiSTer, Removing Monitors/uaegfx..."
+      delete >NIL: DEVS:Monitors/uaegfx#?
+      SET DoReboot 1
+    EndIF
+    ; Conflicting ModeID with MiSTer Modes 
+    IF EXISTS DEVS:Monitors/HighGFX
+      Echo "MiSTer, Removing Monitors/HighGFX..."
+      copy >NIL: DEVS:Monitors/HighGFX#? SYS:Storage/Monitors/
+      delete >NIL: DEVS:Monitors/HighGFX#?
+      SET DoReboot 1
+    EndIF
+  EndIF
+Endif
+
+
+; Reboot to apply changes
+If $DoReboot EQ "1"
+    Echo ""
+	Echo "Rebooting..." 
+	Echo "" 
+	Wait 2 
+	Reboot
+EndIf
+
+
+BindDrivers
+
+
+; Installs the pistorm shared drive dos driver
+If $PiStorm EQ "1"
+  DevEx >NIL brcm-emmc.device
+  If NOT WARN
+    Copy SYS:Storage/DOSDrivers/PC0_Pistorm_emmc DEVS:DOSDrivers/PCO
+    Copy SYS:Storage/DOSDrivers/PC0_Pistorm_emmc.info DEVS:DOSDrivers/PCO.info
+  Else
+    Copy SYS:Storage/DOSDrivers/PC0_Pistorm_sdhc DEVS:DOSDrivers/PCO
+    Copy SYS:Storage/DOSDrivers/PC0_Pistorm_sdhc.info DEVS:DOSDrivers/PCO.info
+  Endif
+Endif
+
+
+C:Mount >NIL: DEVS:DOSDrivers/~(#?.info)
+
+
+IF EXISTS DEVS:Monitors
+  IF EXISTS DEVS:Monitors/VGAOnly
+    DEVS:Monitors/VGAOnly
+  EndIF
+  C:List >NIL: DEVS:Monitors/~(#?.info|VGAOnly) TO T:M LFORMAT "DEVS:Monitors/%s"
+  Execute T:M
+  C:Delete >NIL: T:M
+EndIF
+
+
+SetEnv Language "english"
+SetEnv Workbench $Workbench
+SetEnv Kickstart $Kickstart
+UnSet Workbench
+UnSet Kickstart
+
+C:AddDataTypes REFRESH QUIET
+
+If $HW EQ "Real"
+  ; Not working on MiSTer
+  If $MiSTer EQ "0"
+    FBlit
+    FText
+  Endif
+Endif
+
+C:IPrefs
+
+System:Utilities/FullPalette/FPPrefs
+C:ConClip
+C:PatchWB
+C:SetpatchMrgCop
+C:IconsToFastMem
+C:StackAttack
+Run >NIL: C:NewIcons
+
+;Loadresource Libs:diskfont.library Libs:iffparse.library LOCK
+
+Path >NIL: RAM: C: SYS:Utilities SYS:Rexxc SYS:System S: SYS:Prefs SYS:WBStartup SYS:Tools SYS:Tools/Commodities
+
+IF EXISTS S:User-Startup
+  Execute S:User-Startup
+EndIF
+
+Resident Execute REMOVE
+Resident Assign REMOVE
+
+C:LoadWB
+
+EndCLI >NIL:

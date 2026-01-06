@@ -2,22 +2,29 @@
 Builds HD image(s) of AGS 3.0 to be used on MiSTer.
 Wanted to build most complete version of AGS even with content that might not work on MiSTer currently.
 
-Patches add to AGS:
-- RTG modes for cool display 
+Patches added to AGS:
+- RTG modes for cool display
 - SHARE for game saves
-- TBD: Toccata 16bit AHI sound card support 
+- Toccata 16bit AHI sound card support
+- Internet support
+
+Note: HDD Image is smaller (43Gb) than UAE version (52Gb) because partition sizes are reduced to avoid having free space. 
 
 ## How to use
 1. Clone this repository or download and extract [zip](https://github.com/gljubojevic/AGStoMiSTer/archive/refs/heads/main.zip)
 2. Download and extract AGS UAE 3.0 from https://www.amigagameselector.co.uk/
-3. Open powershell and start `AGS30toMiSTer.ps1`
-4. Copy A1200 kickstart as `KICK.ROM` to `build/games/AmigaGameSelector30`
-5. Copy content of `build` folder to MiSTer SD card
+3. Open powershell and start  
+`AGS30toMiSTer.ps1`
+4. Copy A1200 Kickstart ROM rev 40.68 as `KICK.ROM` to  
+`build/games/AmigaGameSelector30`  
+if not extracted from AGS
+5. Copy content of `build` folder to MiSTer SD card root
 
-When you copy content of build folder you should have "Amiga Game Selector 3.0" inside "Computer" menu.  
+Note: It takes a long time to build HDD image.
+
+When you copy content of build folder you should have "Amiga Game Selector 3.0" inside "Computer" menu.
+
 Run it and enjoy!
-
-Note: It takes a long time to build HDD images it is recommended to use SSD disk.
 
 ## Project structure
 - [AmigaFiles](./AmigaFiles/) (Files for patching AGS)
