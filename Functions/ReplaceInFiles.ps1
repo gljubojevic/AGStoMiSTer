@@ -42,7 +42,7 @@ function ReplaceInFiles {
 		$fPath = $f.FullName
 
 		try {
-			$text = Get-Content -Raw -LiteralPath $fPath -ErrorAction Stop
+			$text = Get-Content -Raw -Encoding $Encoding -LiteralPath $fPath -ErrorAction Stop
 		} catch {
 			$errMsg = "Skipping $($fPath) - cannot read file: $($_.Exception.Message)"
 			Write-Warning $errMsg
@@ -87,7 +87,7 @@ function ReplaceInFiles {
 
 		if ($new -ne $text) {
 			try {
-				Set-Content -LiteralPath $fPath -Value $new -Encoding $Encoding -Force
+				Set-Content -NoNewline -LiteralPath $fPath -Value $new -Encoding $Encoding -Force
 				$results += [pscustomobject]@{ File = $fPath; Matches = $matchCount }
 				Write-Host "Updated: $($fPath) ($($matchCount) matches)"
 			} catch {
