@@ -1,0 +1,9 @@
+If $HW NOT EQ "Real"
+ Visage >NIL: MODE $500A1000 DELAY 3 NOBUSY AGS:Images/logo_hi.iff
+Else
+ If $MiSTer EQ "1"
+  Visage >NIL: MODE $50061000 DELAY 3 NOBUSY AGS:Images/logo_hi.iff
+ Else
+  Visage >NIL: DELAY 3 NOBUSY AGS:Images/logo_hi.iff
+ Endif
+Endif

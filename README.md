@@ -8,7 +8,9 @@ Patches added to AGS:
 - Toccata 16bit AHI sound card support
 - Internet support
 
-Note: HDD Image is smaller (43Gb) than UAE version (52Gb) because partition sizes are reduced to avoid having free space. 
+Notes: 
+- To use Internet, start `Work:Web\Miami\MiamiDx`, click on `Online` button, use IBrowse etc.
+- HDD Image is smaller (43Gb) than UAE version (52Gb) because partition sizes are reduced to avoid having free space.
 
 ## How to use
 1. Clone this repository or download and extract [zip](https://github.com/gljubojevic/AGStoMiSTer/archive/refs/heads/main.zip)

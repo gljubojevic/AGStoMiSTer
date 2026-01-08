@@ -202,7 +202,7 @@ $null = Remove-Item -Path "$($BuildFolder)MiSTer_RTG.lha"
 
 
 ##################################################
-# Copy AGS Workbench Patches
+# Copy Workbench Patches
 $AmigaFilesAGS = "$($AmigaFiles)\AGS30\Workbench"
 #& $HSTImagerExe fs copy "$($AmigaFilesAGS)\Devs\*" "$($AGS30MiSTerHDD)\rdb\dh0\Devs\" --recursive --makedir --force
 & $HSTImagerExe fs copy "$($AmigaFilesAGS)\Devs\scsi.*" "$($AGS30MiSTerHDD)\rdb\dh0\Devs\" --recursive --makedir --force
@@ -221,6 +221,20 @@ $AmigaFilesAGS = "$($AmigaFiles)\AGS30\Workbench"
 & $HSTImagerExe fs copy "$($AmigaFilesAGS)\Prefs\Env-Archive\Sys\ahi.prefs" "$($AGS30MiSTerHDD)\rdb\dh0\Prefs\Env-Archive\Sys\" --force
 & $HSTImagerExe fs copy "$($AmigaFilesAGS)\Prefs\Env-Archive\Sys\screenmode.prefs" "$($AGS30MiSTerHDD)\rdb\dh0\Prefs\Env-Archive\Sys\" --force
 
+& $HSTImagerExe fs copy "$($AmigaFilesAGS)\WBStartup\*" "$($AGS30MiSTerHDD)\rdb\dh0\WBStartup\" --force
+
+
+##################################################
+# Copy Work Patches
+$AmigaFilesAGS = "$($AmigaFiles)\AGS30\Work"
+& $HSTImagerExe fs copy "$($AmigaFilesAGS)\Web\Miami\*" "$($AGS30MiSTerHDD)\rdb\dh1\Web\Miami\" --force
+
+
+##################################################
+# Copy AGS_Drive Patches
+$AmigaFilesAGS = "$($AmigaFiles)\AGS30\AGS_Drive"
+& $HSTImagerExe fs copy "$($AmigaFilesAGS)\AGS2\Scripts\*" "$($AGS30MiSTerHDD)\rdb\dh4\AGS2\Scripts\" --force
+
 
 ##################################################
 # Patch RTG screen mode on AGS themes
@@ -233,9 +247,9 @@ $AmigaFilesAGS = "$($AmigaFiles)\AGS30\Workbench"
 # mode = $50061000 -> MiSTer: 640x512 8bit
 $SMThemePatch = "$($BuildFolder)SMThemePatch\"
 & $HSTImagerExe fs copy "$($AGS30hdf)\AGS_Drive.hdf\rdb\dh4\AGS2\Themes\*.conf" $SMThemePatch --makedir --force
-$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $500A1000' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive -Backup
-$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $508E1000' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive -Backup
-$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $29004' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive -Backup
+$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $500A1000' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive #-Backup
+$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $508E1000' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive #-Backup
+$null = ReplaceInFiles -Path $SMThemePatch -Filter '*.conf' -Pattern 'mode = $29004' -Replacement 'mode = $50061000' -Encoding 'ascii' -CaseSensitive #-Backup
 & $HSTImagerExe fs copy "$($SMThemePatch)*.conf" "$($AGS30MiSTerHDD)\rdb\dh4\AGS2\Themes\" --force
 # Default theme patched
 & $HSTImagerExe fs copy "$($SMThemePatch)default.conf" "$($AGS30MiSTerHDD)\rdb\dh4\AGS2\ags2.conf" --force
@@ -246,5 +260,6 @@ $null = Remove-Item -Path $SMThemePatch -Recurse
 # Extract Kickstart
 $HDFSource = "$($AGS30hdf)\Workbench.hdf"
 & $HSTImagerExe fs copy "$($HDFSource)\rdb\dh0\Devs\Kickstarts\kick40068.A1200" "$($BuildRoot)KICK.ROM" --force
+
 
 Write-Host "Done"
