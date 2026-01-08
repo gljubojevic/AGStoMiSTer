@@ -8,7 +8,7 @@ $BuildRoot = "$($BuildFolder)games\AmigaGameSelector30\"
 $BuildHDD = "$($BuildRoot)HDD\"
 
 # HST-Imager
-$HSTImagerDownload = "https://github.com/henrikstengaard/hst-imager/releases/download/1.4.526/hst-imager_v1.4.526-e74dd1a_console_windows_x64.zip"
+$HSTImagerDownload = "https://github.com/henrikstengaard/hst-imager/releases/download/1.5.541/hst-imager_v1.5.541-90b4b77_console_windows_x64.zip"
 $HSTImagerPath = "$($ToolsFolder)hst-imager.zip"
 $HSTImager = "$($ToolsFolder)hst-imager\"
 $HSTImagerExe = "$($ToolsFolder)hst-imager\hst.imager.exe"
