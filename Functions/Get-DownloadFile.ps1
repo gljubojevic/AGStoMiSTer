@@ -1,3 +1,6 @@
+# Add assembly reference
+Add-Type -AssemblyName System.Net.Http
+
 function Get-DownloadFile {
 	param (
 		[string]$DownloadURL,
